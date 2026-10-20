@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="400" viewBox="0 0 1000 400" font-family="Segoe UI, Arial, sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+  <rect width="1000" height="400" fill="#FFFFFF"/>
+  <text x="20" y="28" font-size="15" font-weight="700" fill="#1F2937">Practice: questions are checked before you see them; misses come back on a schedule</text>
+  <g font-size="12.5" fill="#374151">
+    <rect x="20" y="50" width="180" height="110" rx="10" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+    <text x="34" y="74" font-weight="700" fill="#78350F">Write questions</text>
+    <text x="34" y="96">model returns JSON with</text>
+    <text x="34" y="114">question, options, key,</text>
+    <text x="34" y="132">explanation, marks)</text>
+    <line x1="200" y1="105" x2="222" y2="105" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="224" y="50" width="250" height="110" rx="10" fill="#E7F4EC" stroke="#2E7D4F" stroke-width="1.5"/>
+    <text x="238" y="74" font-weight="700" fill="#14532D">Check each answer key</text>
+    <text x="238" y="96">explanation must reach the key;</text>
+    <text x="238" y="114">exact calculator if it applies,</text>
+    <text x="238" y="132">otherwise an independent re-solve.</text>
+    <text x="238" y="150">Failures are dropped (3 tries)</text>
+    <line x1="474" y1="105" x2="496" y2="105" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="498" y="50" width="230" height="110" rx="10" fill="#EEF2FB" stroke="#2C4BB3" stroke-width="1.5"/>
+    <text x="512" y="74" font-weight="700" fill="#1E3A8A">Exam screen</text>
+    <text x="512" y="96">timer, question palette, mark</text>
+    <text x="512" y="114">for review, GATE calculator,</text>
+    <text x="512" y="132">MCQ / MSQ / NAT</text>
+    <line x1="728" y1="105" x2="750" y2="105" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="752" y="50" width="228" height="110" rx="10" fill="#EEF2FB" stroke="#2C4BB3" stroke-width="1.5"/>
+    <text x="766" y="74" font-weight="700" fill="#1E3A8A">Grade and review</text>
+    <text x="766" y="96">negative marking (−⅓, −⅔),</text>
+    <text x="766" y="114">time per question, mentor's</text>
+    <text x="766" y="132">review of the attempt</text>
+    <!-- down to mistakes -->
+    <line x1="866" y1="160" x2="866" y2="196" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="752" y="198" width="228" height="110" rx="10" fill="#FBE8E2" stroke="#C0442C" stroke-width="1.5"/>
+    <text x="766" y="222" font-weight="700" fill="#7F1D1D">Mistake lab</text>
+    <text x="766" y="244">each miss is classified: concept</text>
+    <text x="766" y="262">gap, misread, rushed guess,</text>
+    <text x="766" y="280">calculation slip …</text>
+    <line x1="752" y1="253" x2="730" y2="253" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="498" y="198" width="230" height="110" rx="10" fill="#FBE8E2" stroke="#C0442C" stroke-width="1.5"/>
+    <text x="512" y="222" font-weight="700" fill="#7F1D1D">Spaced review</text>
+    <text x="512" y="244">comes back on day 1, 3 and 7;</text>
+    <text x="512" y="262">right on day 7 = fixed,</text>
+    <text x="512" y="280">wrong = starts over</text>
+    <line x1="498" y1="253" x2="476" y2="253" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="224" y="198" width="250" height="110" rx="10" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+    <text x="238" y="222" font-weight="700" fill="#78350F">Daily mix</text>
+    <text x="238" y="244">due mistakes + due flashcards +</text>
+    <text x="238" y="262">checked PYQs + formulas,</text>
+    <text x="238" y="280">shuffled (~15 minutes)</text>
+    <line x1="224" y1="253" x2="202" y2="253" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="20" y="198" width="180" height="110" rx="10" fill="#EFE9FB" stroke="#7048C8" stroke-width="1.5"/>
+    <text x="34" y="222" font-weight="700" fill="#4C1D95">Weak concepts</text>
+    <text x="34" y="244">concept strength from tests,</text>
+    <text x="34" y="262">reviews and PYQs feeds</text>
+    <text x="34" y="280">"Weak spots" practice</text>
+    <path d="M110,198 V172 H110" fill="none"/>
+    <line x1="110" y1="198" x2="110" y2="162" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+  </g>
+  <rect x="20" y="326" width="960" height="58" rx="10" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <g font-size="12.5" fill="#374151">
+    <text x="34" y="350"><tspan font-weight="700">Modes:</tspan> Daily mix · Spot the error · Weak spots · GATE mock (mini / half / full) · One subject · Speed drill · Full PYQ paper</text>
+    <text x="34" y="370">PYQs come from your uploaded papers (OCR + vision), filed by subject and year; an uploaded official key overrides every check.</text>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" font-family="Segoe UI, Arial, sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+  <rect width="1000" height="520" fill="#FFFFFF"/>
+  <text x="20" y="28" font-size="15" font-weight="700" fill="#1F2937">Photo doubt: reading, solving and checking an answer</text>
+  <g font-size="12.5" fill="#374151">
+    <rect x="20" y="48" width="150" height="92" rx="10" fill="#F3F4F6" stroke="#6B7280" stroke-width="1.5"/>
+    <text x="34" y="72" font-weight="700" fill="#1F2937">Photo / screenshot</text>
+    <text x="34" y="94">camera, upload,</text>
+    <text x="34" y="112">or Ctrl+V</text>
+    <line x1="170" y1="94" x2="192" y2="94" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="194" y="48" width="200" height="92" rx="10" fill="#EFE9FB" stroke="#7048C8" stroke-width="1.5"/>
+    <text x="208" y="72" font-weight="700" fill="#4C1D95">Read (vision model)</text>
+    <text x="208" y="94">careful mode: cleaned image,</text>
+    <text x="208" y="112">close-ups, line-by-line check;</text>
+    <text x="208" y="130">you can correct the text</text>
+    <line x1="394" y1="94" x2="416" y2="94" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="418" y="48" width="180" height="92" rx="10" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+    <text x="432" y="72" font-weight="700" fill="#78350F">Solve (qwen3.5:4b)</text>
+    <text x="432" y="94">plain-words explanation,</text>
+    <text x="432" y="112">steps and a final answer</text>
+    <line x1="598" y1="94" x2="620" y2="94" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="622" y="48" width="358" height="92" rx="10" fill="#E7F4EC" stroke="#2E7D4F" stroke-width="1.5"/>
+    <text x="636" y="72" font-weight="700" fill="#14532D">Independent checks, in parallel where possible</text>
+    <text x="636" y="94">exact calculator or runner (code, not a model) ·</text>
+    <text x="636" y="112">independent re-solves (votes) · program check ·</text>
+    <text x="636" y="130">second opinion from the 12B model when unsure</text>
+  </g>
+  <line x1="800" y1="140" x2="800" y2="168" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+  <text x="20" y="190" font-size="14" font-weight="700" fill="#1F2937">The confidence label shown with the answer (strongest evidence wins)</text>
+  <g font-size="12.5">
+    <rect x="20" y="204" width="960" height="40" rx="8" fill="#14532D"/>
+    <text x="36" y="229" font-weight="700" fill="#FFFFFF">Official GATE answer key</text><text x="330" y="229" fill="#D1FAE5">you uploaded the official key for that paper: final, beats every other check</text>
+    <rect x="20" y="250" width="960" height="40" rx="8" fill="#2E7D4F"/>
+    <text x="36" y="275" font-weight="700" fill="#FFFFFF">Very sure: computed exactly</text><text x="330" y="275" fill="#ECFDF5">an exact calculator or runner (gcc, SQLite, …) produced the same value</text>
+    <rect x="20" y="296" width="960" height="40" rx="8" fill="#5FAF7E"/>
+    <text x="36" y="321" font-weight="700" fill="#FFFFFF">Very likely right</text><text x="330" y="321" fill="#FFFFFF">program check and all independent re-solves agree</text>
+    <rect x="20" y="342" width="960" height="40" rx="8" fill="#A7D7B8"/>
+    <text x="36" y="367" font-weight="700" fill="#14532D">Probably right</text><text x="330" y="367" fill="#14532D">the program check or the re-solves agree</text>
+    <rect x="20" y="388" width="960" height="40" rx="8" fill="#FDE68A"/>
+    <text x="36" y="413" font-weight="700" fill="#78350F">Unsure</text><text x="330" y="413" fill="#78350F">independent tries disagree: verify the final step, or ask for a second opinion</text>
+    <rect x="20" y="434" width="960" height="40" rx="8" fill="#FBCFC3"/>
+    <text x="36" y="459" font-weight="700" fill="#7F1D1D">Warning: a check disagrees</text><text x="330" y="459" fill="#7F1D1D">an exact check got a different answer; its value is shown next to the model's</text>
+  </g>
+  <text x="20" y="502" font-size="12" fill="#6B7280">Each label is calibrated over time: Settings → Reliability shows how often each label was really right, per subject.</text>
+</svg>

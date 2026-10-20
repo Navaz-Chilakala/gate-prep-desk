@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GATE Prep Desk</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#2c4bb3">
+<link rel="icon" href="/icons/icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<script src="theme.js"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="story.css">
+<link rel="stylesheet" href="chat.css">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+</head>
+<body>
+<header class="top">
+  <h1>GATE Prep Desk</h1>
+  <span id="status" class="status">Starting&hellip;</span>
+</header>
+<div id="ollamaNote" class="note hidden"></div>
+
+<main>
+  <nav class="tabs" id="tabs" aria-label="Sections">
+    <div class="nav-label">Study</div>
+    <button data-tab="ask"><i data-i="book"></i><span>Learn</span></button>
+    <button data-tab="solve"><i data-i="camera"></i><span>Photo doubt</span></button>
+    <button data-tab="practice"><i data-i="pencil"></i><span>Practice</span></button>
+    <button data-tab="pyq"><i data-i="clock"></i><span>PYQs</span></button>
+    <button data-tab="mistakes"><i data-i="refresh"></i><span>Mistake lab</span></button>
+    <div class="nav-label">Library</div>
+    <button data-tab="topics"><i data-i="list"></i><span>Topics</span></button>
+    <button data-tab="notes"><i data-i="note"></i><span>Notes</span></button>
+    <button data-tab="formulas"><i data-i="sigma"></i><span>Formulas</span></button>
+    <button data-tab="files"><i data-i="folder"></i><span>Books</span></button>
+    <div class="nav-spacer"></div>
+    <button data-tab="settings"><i data-i="gear"></i><span>Settings</span></button>
+  </nav>
+  <!-- LEARN -->
+  <section id="tab-ask" class="hidden">
+    <div class="page-head story-hero">
+      <div class="eyebrow" id="storyEyebrow"></div>
+      <h2 id="greet">What shall we learn today?</h2>
+      <p id="storyLine"></p>
+      <div class="row ask-row">
+        <input type="text" id="askIn" class="big" placeholder="Topic or question, e.g. Banker's algorithm" style="flex:1;min-width:220px">
+        <button class="primary big-btn" id="askGo">Teach me <i data-i="arrowR"></i></button>
+      </div>
+      <div id="recentTopics" class="chips"></div>
+    </div>
+    <div id="today"></div>
+    <div id="askCovered" class="hidden"></div>
+    <div id="askHook"></div>
+    <div id="askLesson" class="hidden"></div>
+    <div id="askMastery" class="hidden"></div>
+    <div id="askActions" class="card row hidden">
+      <button id="askCards"><i data-i="cards"></i> Flashcards</button>
+      <button class="link" id="askRedo"><i data-i="refresh"></i> Explain differently</button>
+    </div>
+    <div id="askChatCard" class="card hidden row"><div class="card-title" style="flex:1;min-width:200px">Questions about this lesson?</div><button class="primary" id="askChatOpen"><i data-i="chat"></i> Ask the tutor</button><div id="askChat" hidden></div></div>
+    <div id="askTest"></div>
+  </section>
+
+  <!-- MISTAKE LAB -->
+  <section id="tab-mistakes" class="hidden">
+    <div class="page-head">
+      <h2>Mistake lab</h2>
+      <p id="mlLine"></p>
+      <div class="head-actions">
+        <button class="primary" id="mistakeRetest"><i data-i="refresh"></i> Retest all</button>
+        <button id="mlMix"><i data-i="cards"></i> Daily mix</button>
+        <button id="mistakeSimilar" title="New questions on the concepts you keep missing"><i data-i="spark"></i> Similar questions</button>
+      </div>
+    </div>
+    <div id="mlRun"></div>
+    <div id="mlInsights"></div>
+    <div id="mlFilters" class="ml-filters"></div>
+    <div id="mistakeList"></div>
+    <div class="section-title"><h3>Fixed</h3><span class="muted" id="mlFixedCount"></span></div>
+    <div id="mlFixed"></div>
+  </section>
+
+  <!-- PYQs: subject → year → questions, each taught as a masterclass -->
+  <section id="tab-pyq" class="hidden">
+    <div id="pyqHome">
+      <div class="card">
+        <div class="row"><h2 class="h" style="flex:1">Previous-year questions <span id="pyqCount" class="pill"></span></h2>
+          <button id="pyqScan" title="Look for PYQs in your books and notes again"><i data-i="refresh"></i> Rescan</button></div>
+        <div class="row" style="margin-top:12px">
+          <label class="btn primary"><i data-i="folder"></i> Upload PDF<input type="file" id="pyqPdfIn" accept="application/pdf,.pdf" multiple hidden></label>
+          <label class="btn"><i data-i="image"></i> Upload images<input type="file" id="pyqImgIn" accept="image/*" multiple hidden></label>
+          <label class="btn"><i data-i="camera"></i> Camera<input type="file" id="pyqCamIn" accept="image/*" capture="environment" hidden></label>
+          <input type="text" id="pyqUpYear" placeholder="Year (optional)" title="Used only if the year can't be read from the paper" style="width:130px">
+        </div>
+        <div id="pyqScanInfo" class="small muted"></div>
+      </div>
+      <div class="card" id="pyqPaperCard">
+        <div class="row"><div class="card-title" style="flex:1;min-width:180px">Full paper <i data-i="help" class="tip" title="One year's PYQs as the real exam: timer, palette, calculator, negative marking. Scored with the official key where available."></i></div>
+          <select id="pyqPaperSel"></select><button class="primary" id="pyqPaperGo"><i data-i="pencil"></i> Start</button></div>
+        <p id="pyqPaperInfo" class="small muted"></p>
+      </div>
+      <div class="card" id="pyqKeyCard">
+        <div class="row"><div class="card-title" style="flex:1;min-width:180px">Official answer keys <i data-i="help" class="tip" title="An official key overrides every other check for that year's PYQs."></i></div>
+          <label class="btn"><i data-i="check"></i> Upload key<input type="file" id="pyqKeyIn" accept="application/pdf,.pdf,image/*" multiple hidden></label>
+          <button class="link" id="pyqKeyPaste">Paste</button></div>
+        <div id="pyqKeyEdit" class="hidden"></div>
+        <div id="pyqKeyList"></div>
+      </div>
+      <div id="pyqProgress" class="card hidden">
+      </div>
+      <div class="card">
+        <div class="card-title">Subject</div>
+        <div id="pyqSubTabs" class="pyq-tabs"></div>
+        <div id="pyqYearWrap" class="hidden"><div class="card-title" style="margin-top:14px">Year</div><div id="pyqYearTabs" class="pyq-tabs"></div></div>
+      </div>
+      <div id="pyqList"></div>
+    </div>
+    <div id="pyqRun"></div>
+    <div id="pyqStudy" class="hidden">
+      <div class="card row">
+        <button id="pyqBack"><i data-i="arrowL"></i> All PYQs</button>
+        <div id="pyqMeta" style="flex:1;min-width:200px"></div>
+        <button class="link" id="pyqRegen"><i data-i="refresh"></i> Rewrite</button>
+        <button class="primary" id="pyqAsk"><i data-i="chat"></i> Ask the tutor</button>
+      </div>
+      <div id="pyqLesson"></div>
+    </div>
+  </section>
+
+  <!-- PHOTO DOUBT -->
+  <section id="tab-solve" class="hidden">
+    <div class="card">
+      <h2 class="h">Photo doubt</h2>
+      <div class="row">
+        <label class="btn primary"><i data-i="camera"></i> Camera<input type="file" id="camIn" accept="image/*" capture="environment" hidden></label>
+        <label class="btn"><i data-i="image"></i> Upload image<input type="file" id="imgIn" accept="image/*" multiple hidden></label>
+        <span class="small muted">or Ctrl+V</span>
+      </div>
+      <div id="imgPrev" class="thumbs"></div>
+      <div class="row" style="margin-top:14px">
+        <label><input type="checkbox" id="solveSimple" checked> Beginner level</label>
+        <label title="Several passes over the image: slower, more accurate for handwriting and formulas"><input type="checkbox" id="solveDetailed" checked> Careful reading</label>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <button id="readQ"><i data-i="search"></i> Read</button>
+        <button class="primary" id="explainQ">Explain <i data-i="arrowR"></i></button>
+        <button class="link" id="clearImgs">Clear</button>
+      </div>
+    </div>
+    <div id="readCard" class="card hidden">
+      <div class="card-title">Question text</div>
+      <textarea id="qText" rows="7" style="width:100%" title="Correct anything misread before explaining"></textarea>
+      <details><summary class="small">Preview</summary><div id="qPreview" class="md"></div></details>
+    </div>
+    <div id="solveOut" class="card md hidden"></div>
+    <div id="solveActions" class="card row hidden">
+      <button id="solveSpeak"><i data-i="speaker"></i> Listen</button>
+      <button id="solveSecond"><i data-i="refresh"></i> Second opinion</button>
+      <button class="primary" id="solveQuiz"><i data-i="pencil"></i> 5 similar questions</button>
+      <span style="flex:1"></span>
+      <input type="text" id="solvePyqYear" placeholder="PYQ year" style="width:100px"><button id="solvePyq"><i data-i="clock"></i> Add to PYQs</button>
+    </div>
+    <div id="solveChatCard" class="card hidden row"><div class="card-title" style="flex:1;min-width:200px">Questions about this one?</div><button class="primary" id="solveChatOpen"><i data-i="chat"></i> Ask the tutor</button><div id="solveChat" hidden></div></div>
+    <div id="solveTest"></div>
+    <details class="card" id="runCard"><summary><b>Run code</b> <span class="small muted">SQL · C · Boolean · Regex · Grammar</span></summary>
+      <div class="row" style="margin-top:12px"><select id="runSel">
+        <option value="sql">SQL query</option><option value="c">C program output</option><option value="bool">Boolean equivalence</option>
+        <option value="regex">Regular expressions</option><option value="grammar">Grammar membership</option></select></div>
+      <div id="runForm" style="margin-top:10px"></div>
+      <div class="row" style="margin-top:10px"><button class="primary" id="runGo">Run</button><span id="runErr" class="small" style="color:var(--red)"></span></div>
+      <div id="runOut" class="solver-out md"></div>
+    </details>
+    <details class="card" id="calcCard"><summary><b>Calculators</b> <span class="small muted">Scheduling · Paging · Cache · Subnetting · K-map · CRC</span></summary>
+      <div class="row" style="margin-top:12px"><select id="calcSel"></select><button id="calcFill" title="Fill the inputs from the question above"><i data-i="spark"></i> Autofill</button></div>
+      <div id="calcForm" class="calc-grid"></div>
+      <div class="row" style="margin-top:12px"><button class="primary" id="calcGo">Calculate</button><span id="calcErr" class="small" style="color:var(--red)"></span></div>
+      <div id="calcOut" class="solver-out md"></div>
+    </details>
+    <div class="card">
+      <div class="card-title">Check my working <i data-i="help" class="tip" title="Add the question above, then your steps here (typed or a photo). The first wrong step is pointed out."></i></div>
+      <textarea id="workText" rows="5" style="width:100%;margin-top:8px" placeholder="Step 1: ...&#10;Step 2: ...&#10;Answer: ..."></textarea>
+      <div class="row" style="margin-top:8px"><label class="btn"><i data-i="image"></i> Photo<input type="file" id="workImg" accept="image/*" hidden></label><span id="workImgName" class="small muted"></span><span style="flex:1"></span><button class="primary" id="workGo">Check</button></div>
+      <div id="workOut" class="md hidden" style="margin-top:14px"></div>
+    </div>
+    <div class="card"><div class="card-title">History</div><div id="solvedList"></div></div>
+  </section>
+
+  <!-- PRACTICE -->
+  <section id="tab-practice" class="hidden">
+    <div id="practiceHome">
+      <div class="page-head">
+        <h2>Practice</h2>
+        <p id="practiceLine"></p>
+      </div>
+      <div class="modes">
+        <div class="mode tone-red mode-wide">
+          <div class="mode-top"><span class="mode-ico"><i data-i="refresh"></i></span><span class="mode-tag">Daily · ~15 min</span></div>
+          <h3>Daily mix</h3>
+          <p>Due mistakes, flashcards and PYQs, shuffled.</p>
+          <div class="mode-ctl"><span class="small muted" id="mixInfo"></span><span style="flex:1"></span><button class="primary" id="mixGo" title="Keys: A–D, 1–4, Enter, Space">Start <i data-i="arrowR"></i></button></div>
+        </div>
+        <div class="mode tone-amber">
+          <div class="mode-top"><span class="mode-ico"><i data-i="search"></i></span><span class="mode-tag">~3 min</span></div>
+          <h3>Spot the error</h3>
+          <p>Find the one wrong step in a solution.</p>
+          <div class="mode-ctl"><input type="text" id="seTopic" placeholder="Topic (blank: weakest)" style="flex:1;min-width:140px"><button class="primary" id="seGo">Start <i data-i="arrowR"></i></button></div>
+        </div>
+        <div class="mode tone-violet">
+          <div class="mode-top"><span class="mode-ico"><i data-i="spark"></i></span><span class="mode-tag">Recommended</span></div>
+          <h3>Weak spots</h3>
+          <p>Built from your mistakes.</p>
+          <div class="mode-ctl"><select id="adCount"><option value="10">10 questions</option><option value="15">15 questions</option><option value="20">20 questions</option></select><button class="primary" id="adGo">Start <i data-i="arrowR"></i></button></div>
+        </div>
+        <div class="mode tone-blue">
+          <div class="mode-top"><span class="mode-ico"><i data-i="clock"></i></span><span class="mode-tag">Exam pattern</span></div>
+          <h3>GATE mock</h3>
+          <p>Aptitude and technical, negative marking.</p>
+          <div class="mode-ctl"><select id="mockSize"><option value="mini">Mini · 15 Q · 45 min</option><option value="half">Half · 33 Q · 90 min</option><option value="full">Full · 65 Q · 3 h</option></select><button class="primary" id="mockGo">Prepare <i data-i="arrowR"></i></button></div>
+        </div>
+        <div class="mode tone-green">
+          <div class="mode-top"><span class="mode-ico"><i data-i="book"></i></span><span class="mode-tag">Deep dive</span></div>
+          <h3>One subject</h3>
+          <input type="text" id="subFocus" placeholder="Focus (optional), e.g. B+ tree order">
+          <div class="mode-ctl"><select id="subSel" class="subj"></select><select id="subCount" title="Questions"><option>5</option><option selected>10</option><option>15</option></select><button class="primary" id="subGo">Start <i data-i="arrowR"></i></button></div>
+        </div>
+        <div class="mode tone-amber">
+          <div class="mode-top"><span class="mode-ico"><i data-i="bolt"></i></span><span class="mode-tag">15 min</span></div>
+          <h3>Speed drill</h3>
+          <p>10 one-mark questions, timed.</p>
+          <div class="mode-ctl"><select id="drillSel" class="subj"></select><button class="primary" id="drillGo">Start <i data-i="arrowR"></i></button></div>
+        </div>
+      </div>
+      <button class="card link-card" id="goMistakes"><span class="lc-ico"><i data-i="refresh"></i></span><span class="lc-body"><b>Mistake lab <span id="mistakeCount" class="pill bad"></span></b></span><i data-i="arrowR"></i></button>
+      <div class="card">
+        <div class="row"><h3 class="h" style="flex:1">Flashcards <span id="cardsDue" class="pill"></span></h3><button class="primary" id="cardsGo"><i data-i="cards"></i> Review</button></div>
+        <div id="cardBox"></div>
+      </div>
+      <button class="card link-card" id="goPyq"><span class="lc-ico"><i data-i="clock"></i></span><span class="lc-body"><b>Previous-year questions</b></span><i data-i="arrowR"></i></button>
+      <div class="row small muted"><label title="Slower, safer answer keys"><input type="checkbox" id="pVerify" checked> Double-check keys</label>
+        <label>Difficulty <select id="pDiff"><option>GATE level</option><option>Mixed</option><option>Easy</option><option>Hard</option></select></label></div>
+    </div>
+    <div id="practiceRun"></div>
+  </section>
+
+  <!-- MY TOPICS -->
+  <section id="tab-topics" class="hidden">
+    <div class="card">
+      <h2 class="h">Topics</h2>
+      <div class="stats" id="topicStats" style="margin-bottom:14px"></div>
+      <div class="row">
+        <input type="text" id="topicSearch" placeholder="Search topics" style="flex:1;min-width:200px">
+        <button id="topicsDownload" title="Also saved as My GATE topics.md in the app folder"><i data-i="download"></i> Download</button>
+      </div>
+      <div class="row" style="margin-top:12px"><span class="small muted" style="flex:1" title="Topics, formulas, mistakes, mini lessons, checked PYQs and notes, ready to print or save as PDF">Revision pack</span>
+        <select id="packSubj" class="subj"></select><button id="packGo"><i data-i="book"></i> Create</button></div>
+    </div>
+    <details class="card" id="syllabusCard" open><summary><b>Syllabus map</b></summary>
+      <div class="sy-legend small"><span class="sy-chip mastered">Mastered</span><span class="sy-chip studied">Studied</span><span class="sy-chip weak">Weak</span><span class="sy-chip">Not started</span><span class="muted">(n) PYQs</span></div>
+      <div id="syllabusMap"></div>
+    </details>
+    <div id="topicList"></div>
+  </section>
+  <!-- MY NOTES -->
+  <section id="tab-notes" class="hidden">
+    <div class="layout notes-layout">
+      <nav class="side card" id="nSubjects"></nav>
+      <div>
+        <div class="card row">
+          <h3 class="h" id="nTitle" style="flex:1;margin:0"></h3>
+          <input type="text" id="nSearch" placeholder="Search notes" style="min-width:180px">
+          <label class="btn" title="Photos of handwritten notes, turned into clean notes"><i data-i="camera"></i> Scan<input type="file" id="nScanIn" accept="image/*" multiple hidden></label>
+          <button class="primary" id="nAdd"><i data-i="plus"></i> Add topic</button>
+          <button id="nDownload" title="Download all notes (also saved as My GATE notes.md)"><i data-i="download"></i></button>
+        </div>
+        <div id="nScan"></div>
+        <div id="nList"></div>
+      </div>
+    </div>
+  </section>
+  <!-- FORMULA BOOK -->
+  <section id="tab-formulas" class="hidden">
+    <div class="card no-print">
+      <h2 class="h">Formulas</h2>
+      <div class="row">
+        <input type="text" id="fSearch" placeholder="Search formulas" style="flex:1;min-width:200px">
+        <button class="primary" id="fDrill"><i data-i="spark"></i> Drill</button><button id="fResort" title="Re-check every formula: real formula or not, subject and name"><i data-i="refresh"></i> Re-sort</button><button id="fPrint" title="Print"><i data-i="book"></i></button><button id="fDownload" title="Download (also saved as My GATE formulas.md)"><i data-i="download"></i></button>
+      </div>
+    </div>
+    <nav class="subj-tabs no-print" id="fSubjects"></nav>
+    <div id="fList" class="f-grid"></div>
+  </section>
+  <!-- NOTES & BOOKS -->  <section id="tab-files" class="hidden">
+    <div class="card">
+      <h2 class="h">Books</h2>
+      <div id="drop" class="drop">
+        <div class="hand" style="font-size:24px">Drop PDFs or images</div>
+        <div class="row" style="justify-content:center;margin-top:12px">
+          <label class="btn primary"><i data-i="upload"></i> Choose files<input type="file" id="fileIn" accept="application/pdf,image/*" multiple hidden></label>
+          <label class="btn"><i data-i="camera"></i> Camera<input type="file" id="fileCam" accept="image/*" capture="environment" hidden></label>
+          <label class="btn" title="Import a study space saved earlier (.json)"><i data-i="download"></i> Import<input type="file" id="importIn" accept=".json,application/json" hidden></label>
+        </div>
+      </div>
+      <p id="upMsg" class="small muted"></p>
+    </div>
+    <div class="card hidden" id="queueCard">
+      <div class="card-title">Reading queue <i data-i="help" class="tip" title="Books are read one after another in the background. Keep the app open."></i></div>
+      <div id="queueList"></div>
+    </div>
+    <div class="card">
+      <div class="row"><div class="card-title" style="flex:1">Study spaces</div></div>
+      <div id="siteList">Loading&hellip;</div>
+    </div>
+    <div class="card">
+      <div class="row"><input type="text" id="searchIn" placeholder="Search notes, lessons and questions" style="flex:1;min-width:200px"><button id="searchGo"><i data-i="search"></i> Search</button></div>
+      <div id="searchOut" class="small" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- SETTINGS -->
+  <section id="tab-settings" class="hidden">
+    <div class="card">
+      <h2 class="h">Settings</h2>
+      <div class="form" style="margin-top:12px">
+        <label>Teaching model <select id="setModel"></select></label>
+        <label>Vision model <select id="setVModel"></select></label>
+        <label>Language <select id="setLang"><option value="en">English</option><option value="hinglish">Hinglish</option></select></label>
+        <label title="Used for double-checks, votes and reading calculator inputs; a bigger model is more reliable">Checking model <select id="setCModel"></select></label>
+        <label>Second-opinion model <select id="setBigModel"></select></label>
+        <label>GATE exam date <input type="date" id="setGate"></label>
+        <label>Text size <select id="setZoom"></select></label>
+        <label class="row" style="flex-direction:row;align-items:center;gap:8px;margin-top:22px"><input type="checkbox" id="setContrast"> High contrast</label>
+        <label>Theme <select id="setTheme"><option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+        <label>Ollama address <input type="text" id="setOllama" style="width:100%"></label>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row"><h3 class="h" style="flex:1">Accuracy self-test <i data-i="help" class="tip" title="GATE questions with known answers, answered by the model alone and with all checks. Run it after switching models."></i></h3>
+        <select id="stSize"><option value="15">Quick · 15 Q · ~10 min</option><option value="999">Full · 47 Q · ~35 min</option></select>
+        <button class="primary" id="stGo">Run</button></div>
+      <div id="stOut"></div>
+    </div>
+    <div class="card">
+      <h3 class="h">Reliability by subject <i data-i="help" class="tip" title="How often checked answers were right (self-tests, official keys), the model alone, fact-check corrections and your reports."></i></h3>
+      <div id="relOut"></div>
+    </div>
+    <div class="card">
+      <div class="row"><h3 class="h" style="flex:1">Compare models <i data-i="help" class="tip" title="Runs the quick self-test on each ticked model and times it (10–25 min per model). Your settings are not changed."></i></h3><button class="primary" id="mcGo">Compare</button></div>
+      <div id="mcModels" class="row" style="gap:6px 14px"></div>
+      <label class="small" style="display:block;margin-top:8px"><input type="checkbox" id="mcFc"> Include fact-checker test (+5 min each)</label>
+      <p id="mcLive" class="small muted"></p>
+      <div id="mcOut"></div>
+    </div>
+    <div class="card">
+      <div class="row"><h3 class="h" style="flex:1">Fact-checking <i data-i="help" class="tip" title="A reviewer looks for factual, formula and calculation errors. Corrections with 70%+ confidence are applied; the rest are flagged."></i></h3>
+        <label class="small"><input type="checkbox" id="setFactcheck"> Check every new lesson</label></div>
+      <div id="fcStats"></div>
+      <div class="row" style="margin-top:12px"><button id="fcTestGo" title="Two short lessons with planted errors (~5 min)"><i data-i="check"></i> Test the fact-checker</button></div>
+      <div id="fcTestOut"></div>
+      <details id="myFactsBox" style="margin-top:14px"><summary class="small"><b>My facts</b> <span id="myFactsCount" class="muted"></span></summary>
+        <div id="myFactsList"></div>
+        <div class="row" style="margin-top:8px"><textarea id="myFactNew" rows="2" style="flex:1;min-width:240px" placeholder="e.g. In GATE, log n means log base 2 unless stated."></textarea>
+          <select id="myFactSubj"></select><button id="myFactAdd">Add</button></div>
+        <p id="myRejects" class="small muted"></p>
+      </details>
+    </div>
+    <div class="card" id="hookCard">
+      <div class="row"><h3 class="h" style="flex:1">Memory-hook pictures <i data-i="help" class="tip" title="One picture of an everyday analogy per lesson, drawn on this laptop (stable-diffusion.cpp, SDXL-Turbo). A memory aid; exact diagrams are drawn separately."></i></h3><label class="small">Style <select id="setHookStyle"></select></label><label class="small"><input type="checkbox" id="setAutoHook"> Auto-draw for new lessons</label></div>
+      <p id="hookState" class="small"></p>
+    </div>
+    <div class="card" id="nightCard">
+      <div class="row"><h3 class="h" style="flex:1">Night shift <i data-i="help" class="tip" title="Runs slow jobs after 3 minutes of inactivity and stops when you return. Leave the app open overnight."></i></h3>
+        <label class="small"><input type="checkbox" id="nightOn"> On</label><button id="nightRun">Run now</button></div>
+      <div class="row small" style="gap:6px 16px">
+        <label><input type="checkbox" data-nt="verify"> Check PYQ answers</label>
+        <label><input type="checkbox" data-nt="facts"> Fact-check older content</label>
+        <label><input type="checkbox" data-nt="master"> Pre-write PYQ lessons</label></div>
+      <div id="nightState" style="margin-top:10px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Internet <i data-i="help" class="tip" title="Adds web details with sources. Only the topic or question is sent, never your notes or files. Without a key, Wikipedia only; a key from ollama.com enables full web search."></i></div>
+      <div class="form">
+        <label>Web lookup <select id="setWeb"><option value="on">On</option><option value="off">Off (fully offline)</option></select></label>
+        <label>Ollama web search key <input type="password" id="setWebKey" placeholder="Optional" autocomplete="off"></label>
+      </div>
+      <p class="small muted" style="margin-bottom:0"><span id="webState"></span></p>
+    </div>
+    <div class="card">
+      <div class="card-title">App</div>
+      <div class="row">
+        <button class="primary" id="installGo"><i data-i="download"></i> Install</button>
+        <button id="quitGo"><i data-i="stop"></i> Shut down</button>
+      </div>
+      <p id="appInfo" class="small muted"></p>
+    </div>
+    <div class="card">
+      <div class="card-title">Reported questions</div>
+      <div id="reportList"></div>
+    </div>
+    <div class="card">
+      <div class="row"><h3 class="h" style="flex:1">Data health <i data-i="help" class="tip" title="Finds half-written lessons, duplicate or cut-off PYQs, ungradable items and leftovers from deleted books, with a fix for each. Shows disk use per book."></i></h3><button id="healthGo"><i data-i="refresh"></i> Check</button></div>
+      <div id="healthOut"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Backup <i data-i="help" class="tip" title="One .zip with all uploads, lessons, tests, mistakes, flashcards, PYQs, formulas and notes. Restoring keeps a copy of your current data first."></i></div>
+      <div class="row"><button class="primary" id="zipGo"><i data-i="download"></i> Download backup</button><label class="btn"><i data-i="upload"></i> Restore<input type="file" id="zipIn" accept=".zip" hidden></label><span id="zipInfo" class="small muted"></span></div>
+      <div class="ab-box">
+        <div class="row"><label class="small" title="Once a day while the app is open; keeps the newest 7 in that folder"><input type="checkbox" id="abOn"> Daily auto-backup</label>
+          <input type="text" id="abFolder" placeholder="Documents\GATE Prep Desk backups (or a USB drive or OneDrive folder)" style="flex:1;min-width:220px">
+          <button id="abNow"><i data-i="download"></i> Back up now</button></div>
+        <p id="abInfo" class="small muted"></p>
+      </div>
+      <details style="margin-top:10px"><summary class="small muted">Progress only (.json)</summary>
+        <div class="row" style="margin-top:8px"><button id="backupGo"><i data-i="download"></i> Download</button><label class="btn"><i data-i="upload"></i> Restore<input type="file" id="restoreIn" accept=".json" hidden></label></div></details>
+    </div>
+  </section>
+</main>
+
+<script src="/vendor/pdfjs/pdf.min.js"></script>
+<script src="/vendor/marked/marked.min.js"></script>
+<script src="/vendor/dompurify/purify.min.js"></script>
+<script src="/vendor/katex/katex.min.js"></script>
+<script src="/vendor/mermaid/mermaid.min.js"></script>
+<script src="/vendor/tesseract/tesseract.min.js"></script>
+<script src="common.js"></script>
+<script src="palette.js"></script>
+<script src="solvers.js"></script>
+<script src="interp.js"></script>
+<script src="concur.js"></script>
+<script src="dsim.js"></script>
+<script src="runners.js"></script>
+<script src="ra.js"></script>
+<script src="facts.js"></script>
+<script src="facts2.js"></script>
+<script src="facts3.js"></script>
+<script src="factcheck.js"></script>
+<script src="viz.js"></script>
+<script src="calcviz.js"></script>
+<script src="anim.js"></script>
+<script src="hooks.js"></script>
+<script src="diagrams.js"></script>
+<script src="quiz.js"></script>
+<script src="reader.js"></script>
+<script src="formulas.js"></script>
+<script src="topics.js"></script>
+<script src="notes.js"></script>
+<script src="chat.js"></script>
+<script src="pyq.js"></script>
+<script src="selftest.js"></script>
+<script src="daily.js"></script>
+<script src="nightshift.js"></script>
+<script src="search.js"></script>
+<script src="health.js"></script>
+<script src="hub.js"></script>
+</body>
+</html>

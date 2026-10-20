@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430" font-family="Segoe UI, Arial, sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+  <rect width="1000" height="430" fill="#FFFFFF"/>
+  <text x="20" y="28" font-size="15" font-weight="700" fill="#1F2937">Learn: from a topic name to a checked, illustrated lesson</text>
+  <g font-size="12.5" fill="#374151">
+    <!-- row 1 -->
+    <rect x="20" y="50" width="170" height="104" rx="10" fill="#F3F4F6" stroke="#6B7280" stroke-width="1.5"/>
+    <text x="34" y="74" font-weight="700" fill="#1F2937">1 · Topic typed</text>
+    <text x="34" y="96">"Belady's anomaly"</text>
+    <text x="34" y="116">Already covered? You</text>
+    <text x="34" y="134">are reminded first</text>
+    <line x1="190" y1="102" x2="212" y2="102" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="214" y="50" width="240" height="104" rx="10" fill="#E7F4EC" stroke="#2E7D4F" stroke-width="1.5"/>
+    <text x="228" y="74" font-weight="700" fill="#14532D">2 · Prompt assembled</text>
+    <text x="228" y="96">lesson rules and order, verified</text>
+    <text x="228" y="116">GATE facts, your notes, matching</text>
+    <text x="228" y="134">book pages, web snippets (optional)</text>
+    <line x1="454" y1="102" x2="476" y2="102" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="478" y="50" width="230" height="104" rx="10" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+    <text x="492" y="74" font-weight="700" fill="#78350F">3 · Lesson streams</text>
+    <text x="492" y="96">qwen3.5:4b via /api/chat,</text>
+    <text x="492" y="116">shown step by step as it arrives</text>
+    <text x="492" y="134">(~60 tokens/s; ~2 minutes)</text>
+    <line x1="708" y1="102" x2="730" y2="102" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="732" y="50" width="248" height="104" rx="10" fill="#E7F4EC" stroke="#2E7D4F" stroke-width="1.5"/>
+    <text x="746" y="74" font-weight="700" fill="#14532D">4 · Checked</text>
+    <text x="746" y="96">every "a × b = c" recomputed;</text>
+    <text x="746" y="116">fact-checker reviews claims; fixes</text>
+    <text x="746" y="134">with 70%+ confidence applied</text>
+    <!-- down -->
+    <path d="M856,154 V182 H105 V206" fill="none" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <!-- row 2 -->
+    <rect x="20" y="208" width="170" height="104" rx="10" fill="#EFE9FB" stroke="#7048C8" stroke-width="1.5"/>
+    <text x="34" y="232" font-weight="700" fill="#4C1D95">5 · Drawn</text>
+    <text x="34" y="254">viz blocks → exact SVG</text>
+    <text x="34" y="274">Mermaid → flowcharts</text>
+    <text x="34" y="292">KaTeX → formulas</text>
+    <line x1="190" y1="260" x2="212" y2="260" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="214" y="208" width="240" height="104" rx="10" fill="#EEF2FB" stroke="#2C4BB3" stroke-width="1.5"/>
+    <text x="228" y="232" font-weight="700" fill="#1E3A8A">6 · Saved</text>
+    <text x="228" y="254">topic, subtopics, key terms and</text>
+    <text x="228" y="274">formulas into _hub.json; also</text>
+    <text x="228" y="292">My GATE topics.md</text>
+    <line x1="454" y1="260" x2="476" y2="260" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="478" y="208" width="230" height="104" rx="10" fill="#EFE9FB" stroke="#7048C8" stroke-width="1.5"/>
+    <text x="492" y="232" font-weight="700" fill="#4C1D95">7 · Memory hook (optional)</text>
+    <text x="492" y="254">analogy → SDXL-Turbo picture;</text>
+    <text x="492" y="274">vision model scores 2 versions,</text>
+    <text x="492" y="292">keeps the better one</text>
+    <line x1="708" y1="260" x2="730" y2="260" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <rect x="732" y="208" width="248" height="104" rx="10" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+    <text x="746" y="232" font-weight="700" fill="#78350F">8 · Mastery check</text>
+    <text x="746" y="254">5 tricky questions, every key</text>
+    <text x="746" y="274">verified; 4 right closes the topic,</text>
+    <text x="746" y="292">misses go to the Mistake lab</text>
+  </g>
+  <rect x="20" y="334" width="960" height="78" rx="10" fill="#F9FAFB" stroke="#E5E7EB"/>
+  <g font-size="12.5" fill="#374151">
+    <text x="34" y="358"><tspan font-weight="700">Alongside the lesson:</tspan> Flashcards (6–10 cards from the lesson), Explain differently (another teaching style),</text>
+    <text x="34" y="378">Ask the tutor (chat with this lesson as context), Listen (speech). Night shift re-checks older lessons while you are away.</text>
+    <text x="34" y="398">Every model call goes from the page straight to Ollama; saving goes through the PowerShell server to sites\_hub.json.</text>
+  </g>
+</svg>
