@@ -199,7 +199,8 @@ $('#saveGo').onclick = () => {
   $('#saveInfo').textContent = `${fmt === 'pdf' ? 'Opened for printing' : 'Saved to your Downloads folder'}: ${pages} page${pages > 1 ? 's' : ''}${lessons ? ` + ${lessons} lesson${lessons > 1 ? 's' : ''}` : ''}${pages < to - from + 1 ? ` (${to - from + 1 - pages} not read yet were skipped)` : ''}.`;
 };
 
-// ---------- lesson plan (chapters from PDF bookmarks, lessons ~9k chars each) ----------
+// ---------- lesson plan (one lesson per chapter from PDF bookmarks; split only past what the tutor can read at once) ----------
+const LESSON_CHARS = 20000;
 function estChars(n) { const p = S.pages[n - 1]; return p && p.md != null ? p.md.length : 2500; }
 function rangeChars(L) { let c = 0; for (let n = L.from; n <= L.to; n++) c += estChars(n); return c; }
 function buildLessonPlan() {
@@ -222,7 +223,7 @@ function buildLessonPlan() {
     let from = s.from, chars = 0;
     for (let n = s.from; n <= s.to; n++) {
       const c = estChars(n);
-      if (chars + c > 9000 && n > from) { pieces.push({ from, to: n - 1 }); from = n; chars = 0; }
+      if (chars + c > LESSON_CHARS && n > from) { pieces.push({ from, to: n - 1 }); from = n; chars = 0; }
       chars += c;
     }
     pieces.push({ from, to: s.to });
@@ -231,7 +232,7 @@ function buildLessonPlan() {
   const merged = [];
   for (const L of lessons) {
     const prev = merged[merged.length - 1];
-    if (prev && prev.chapter === L.chapter && rangeChars(L) < 1500 && rangeChars(prev) + rangeChars(L) < 9000) prev.to = L.to;
+    if (prev && prev.chapter === L.chapter && rangeChars(prev) + rangeChars(L) <= LESSON_CHARS) prev.to = L.to;
     else merged.push(L);
   }
   // Keep lessons already written for the same page range.
@@ -263,7 +264,7 @@ async function generateLesson(i, signal, style = '') {
   const facts = factsFor(`${L.title || ''}\n${src.slice(0, 3000)}`, 8);
   L.md = await ollamaChat([
     { role: 'system', content: lessonFromMaterialSys(topicKind(L.title || L.chapter ? `${L.chapter || ''} ${L.title || ''}` : src.slice(0, 600)), style) },
-    { role: 'user', content: `Section: ${L.chapter ? L.chapter + ' > ' : ''}${L.title || ''}\nStudy material (pages ${L.from}-${L.to}):\n\n${src.slice(0, 16000)}${factsBlock(facts)}${Web.context(web)}\n\nWrite the lesson.` },
+    { role: 'user', content: `Section: ${L.chapter ? L.chapter + ' > ' : ''}${L.title || ''}\nStudy material (pages ${L.from}-${L.to}):\n\n${src.slice(0, LESSON_CHARS)}${factsBlock(facts)}${Web.context(web)}\n\nWrite the lesson.` },
   ], { signal, maxTokens: 7000, onToken: (_, o) => { if (tab === 'learn' && curLesson === i) { show('#lessonEmpty', false); viewer.set(o, { keepStep: true }); } else live(o, signal); } });
   L.subject = lessonSubject(L.md);
   L.sources = Web.brief(web);
@@ -391,14 +392,14 @@ function renderNotesStrip(L) {
   const el = $('#lessonPages');
   if (!L || !PAGES.length) { el.classList.add('hidden'); return; }
   const idx = [];
-  for (let n = L.from; n <= L.to && idx.length < 14; n++) idx.push(n - 1);
+  for (let n = L.from; n <= L.to && idx.length < 40; n++) idx.push(n - 1);
   el.classList.remove('hidden');
   el.innerHTML = `<div class="row"><div class="card-title" style="flex:1">From your notes</div><span class="small muted">pages ${L.from}–${L.to}${L.to - L.from + 1 > idx.length ? ` (first ${idx.length} shown)` : ''} &middot; tap to read</span></div>
     <div class="notes-strip">${idx.map(i => `<figure data-i="${i}"><img alt="Page ${i + 1}"><figcaption>p. ${i + 1}</figcaption></figure>`).join('')}</div>`;
   if (L.sources && L.sources.length) el.insertAdjacentHTML('beforeend', Web.html(L.sources));
   el.querySelectorAll('figure').forEach(f => {
     const i = +f.dataset.i;
-    pageThumb(i).then(src => { const img = $('img', f); if (img) img.src = src; });
+    pageThumb(i, 900).then(src => { const img = $('img', f); if (img) img.src = src; });
     f.onclick = () => {
       openLightbox.preview = k => pageThumb(idx[0] + k);   // the small version shows at once, the sharp one replaces it
       openLightbox(k => pageThumb(idx[0] + k, 1100), i - idx[0], L.to - L.from + 1, k => `Page ${idx[0] + k + 1} of ${PAGES.length} · ${PAGES[idx[0] + k].label}`);

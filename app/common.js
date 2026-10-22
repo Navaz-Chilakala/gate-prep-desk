@@ -1080,14 +1080,14 @@ function stepHtml(md) {
 class LessonViewer {
   constructor(el, { onFinish, finishLabel = 'Done', onDoneToggle, decorate, onFormula } = {}) {
     this.el = el; this.onFinish = onFinish; this.finishLabel = finishLabel; this.onDoneToggle = onDoneToggle; this.decorate = decorate; this.onFormula = onFormula;
-    this.md = ''; this.step = 0; this.showAll = false; this.done = false; this.seen = new Set();
+    this.md = ''; this.step = 0; this.showAll = Cfg.get('lessonView', 'all') === 'all'; this.done = false; this.seen = new Set();
     el.innerHTML = `<div class="card"><div class="lv-head md"></div><div class="row small lv-tools"></div></div>
       <div class="lv-body"></div>
       <div class="card lv-nav"><button class="lv-prev">${icon('arrowL')} Back</button><div class="lv-dots" role="tablist"></div>
         <button class="lv-speak" title="Read this step aloud">${icon('speaker')} Listen</button><button class="link lv-all"></button>
         <button class="primary lv-next"></button></div>`;
     $('.lv-prev', el).onclick = () => { this.step--; this.render(); };
-    $('.lv-all', el).onclick = () => { this.showAll = !this.showAll; this.render(); };
+    $('.lv-all', el).onclick = () => { this.showAll = !this.showAll; Cfg.set('lessonView', this.showAll ? 'all' : 'steps'); this.render(); };
     $('.lv-speak', el).onclick = () => (window.speechSynthesis && speechSynthesis.speaking) ? speechSynthesis.cancel() : speak(this.current());
     $('.lv-next', el).onclick = () => {
       if (!this.showAll && this.step < this.steps().length - 1) { this.step++; this.render(); el.scrollIntoView({ behavior: 'smooth' }); }
