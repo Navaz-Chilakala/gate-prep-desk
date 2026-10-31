@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study space</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#2c4bb3">
+<link rel="icon" href="/icons/icon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/icons/icon-180.png">
+<script src="theme.js"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ui.css">
+<link rel="stylesheet" href="story.css">
+<link rel="stylesheet" href="chat.css">
+<link rel="stylesheet" href="/vendor/katex/katex.min.css">
+</head>
+<body>
+<header class="top">
+  <a href="index.html#files" class="back"><i data-i="arrowL"></i> Desk</a>
+  <h1 id="title">Opening&hellip;</h1>
+  <span id="status" class="status">Waking the tutor&hellip;</span>
+</header>
+<div id="ollamaNote" class="note hidden"></div>
+
+<main>
+  <nav class="tabs" id="tabs" aria-label="Sections">
+    <a class="nav-back" href="index.html#files"><i data-i="arrowL"></i><span>Back to desk</span></a>
+    <div class="nav-label">This book</div>
+    <button data-tab="digitize"><i data-i="scan"></i><span>Read the pages</span></button>
+    <button data-tab="learn"><i data-i="book"></i><span>Learn</span></button>
+    <button data-tab="questions"><i data-i="help"></i><span>Questions inside</span></button>
+    <button data-tab="test"><i data-i="pencil"></i><span>Test yourself</span></button>
+    <button data-tab="results"><i data-i="chart"></i><span>Review</span></button>
+    <button data-tab="sheet"><i data-i="sigma"></i><span>Cheat sheet</span></button>
+    <div class="nav-spacer"></div>
+    <button data-tab="manage"><i data-i="folder"></i><span>Files</span></button>
+  </nav>
+  <section id="tab-digitize" class="hidden">
+    <div class="card">
+      <h2 class="h">Read pages</h2>
+      <div class="progress"><div id="digiBar"></div></div>
+      <p id="digiInfo" class="small muted"></p>
+      <div class="form">
+        <label>How carefully
+          <select id="digiMode">
+            <option value="smart">Smart: look closely only where needed</option>
+            <option value="thorough">Very detailed: multi-pass reading of every page (slowest, most accurate; best for handwritten notes)</option>
+            <option value="fast">Quick: text and OCR only</option>
+          </select></label>
+        <label>From page <input type="number" id="rngFrom" min="1"></label>
+        <label>to page <input type="number" id="rngTo" min="1"></label>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <label><input type="checkbox" id="optOcr" checked> Use OCR for scans &amp; photos</label>
+      </div>
+      <div class="row" style="margin-top:14px"><button class="primary" id="btnDigitize"><i data-i="book"></i> Read these pages</button><button class="link" id="btnRedoPage">Look again at this page</button></div>
+      <div id="queueStatus" class="queue-strip hidden"></div>
+      <p id="digiEta" class="small muted"></p>
+    </div>
+    <div class="card">
+      <div class="card-title">Export text</div>
+      
+      <div class="form">
+        <label>Format
+          <select id="saveFmt">
+            <option value="html">Word / browser page (.html): keeps tables &amp; formulas</option>
+            <option value="md">Markdown (.md): Obsidian, Notion, VS Code</option>
+            <option value="txt">Plain text (.txt)</option>
+            <option value="pdf">Print or save as PDF</option>
+          </select></label>
+        <label>From page <input type="number" id="saveFrom" min="1"></label>
+        <label>to page <input type="number" id="saveTo" min="1"></label>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <label><input type="checkbox" id="saveLessons"> Also include my lessons</label>
+        <span style="flex:1"></span>
+        <button class="primary" id="saveGo"><i data-i="download"></i> Save</button>
+      </div>
+      <p id="saveInfo" class="small muted"></p>
+    </div>
+    <div class="card">
+      <div class="row"><button id="pgPrev" title="Previous page"><i data-i="arrowL"></i></button><span class="small muted">Page</span><input type="number" id="pageSel" min="1" style="width:80px"><span id="pageCount" class="small muted"></span><button id="pgNext" title="Next page"><i data-i="arrowR"></i></button><span id="pageVia" class="pill"></span><span id="pageSrc" class="small muted"></span></div>
+      <div class="page-thumb" style="margin-top:14px">
+        <div><img id="pageImg" alt="The original page"></div>
+        <div>
+          <div id="pageMd" class="md"></div>
+          <details class="small" style="margin-top:10px"><summary>Fix the text of this page</summary>
+            <textarea id="pageEdit" rows="10" style="width:100%"></textarea><button id="pageSave">Save my fix</button></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-learn" class="hidden">
+    <div class="card row">
+      <div style="flex:1;min-width:220px"><div class="card-title">Chapters &amp; lessons</div><span id="learnInfo" class="small muted"></span></div>
+      <button class="link" id="btnPlan">Re-plan lessons</button>
+      <button id="btnLessons">Write all lessons ahead</button>
+      <button class="link" id="btnRedoLesson">Explain differently</button>
+      <button id="btnCards"><i data-i="cards"></i> Flashcards</button>
+      <label class="small" title="Tag each point with the page it came from, and mark points that aren't in your pages"><input type="checkbox" id="srcTags"> Show sources</label>
+    </div>
+    <div class="layout">
+      <div class="side card" id="lessonList"></div>
+      <div>
+        <div id="lessonEmpty" class="card hidden"></div>
+        <div id="lessonPages" class="card hidden"></div>
+        <div id="lessonHook"></div>
+        <div id="lessonView"></div>
+        <div id="lessonMastery" class="hidden"></div>
+        <div class="card row"><div style="flex:1;min-width:200px"><div class="card-title">Questions about this lesson?</div></div><button class="primary" id="lessonChatOpen"><i data-i="chat"></i> Ask the tutor</button><div id="lessonChat" hidden></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-questions" class="hidden">
+    <div class="card">
+      <h2 class="h">Questions in this file</h2>
+      <div class="row">
+        <label class="small muted">Pages <input type="number" id="qFrom" min="1" style="width:80px"> to <input type="number" id="qTo" min="1" style="width:80px"></label>
+        <button class="primary" id="btnFindQ"><i data-i="search"></i> Find questions</button><button id="btnSolveAll">Solve them all</button>
+      </div>
+      <p id="qInfo" class="small muted"></p>
+    </div>
+    <div id="qList"></div>
+  </section>
+
+  <section id="tab-test" class="hidden">
+    <div id="testSetup">
+      <div class="card">
+        <h2 class="h">Test</h2>
+        <p class="small muted">GATE marking: −⅓ / −⅔ for a wrong MCQ; no negatives for MSQ and NAT.</p>
+        <div class="row">
+          <label class="small muted">Cover <select id="tScope"><option value="lesson">this lesson</option><option value="chapter">this chapter</option><option value="all" selected>the whole file</option></select></label>
+          <label class="small muted">Questions <input type="number" id="qTotal" value="10" min="3" max="65" style="width:64px"></label>
+          <label class="small muted">Level <select id="qDiff"><option>GATE level</option><option>Mixed</option><option>Easy</option><option>Hard</option></select></label>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <label><input type="checkbox" id="tMCQ" checked> MCQ</label>
+          <label><input type="checkbox" id="tMSQ" checked> MSQ</label>
+          <label><input type="checkbox" id="tNAT" checked> NAT</label>
+          <label><input type="checkbox" id="qVerify" checked> Double-check answer keys</label>
+        </div>
+        <p id="scopeInfo" class="small muted"></p>
+        <div class="row" style="margin-top:8px"><button class="primary" id="btnGenTest"><i data-i="pencil"></i> Prepare my test</button></div>
+      </div>
+      <div class="card"><div class="card-title">Your tests</div><div id="testList"></div></div>
+    </div>
+    <div id="testRun"></div>
+  </section>
+
+  <section id="tab-results" class="hidden">
+    <div class="card"><div class="card-title">Attempts</div><div id="attemptList"></div></div>
+    <div id="attemptView"></div>
+  </section>
+
+  <section id="tab-sheet" class="hidden">
+    <div class="card row no-print"><div class="card-title" style="flex:1">Last-minute revision sheet</div><button class="primary" onclick="window.print()">Print / PDF</button></div>
+    <div id="sheet" class="card md"></div>
+  </section>
+
+  <section id="tab-manage" class="hidden">
+    <div class="card">
+      <div class="card-title">Files in this space</div>
+      <div id="fileList" class="small" style="margin-top:8px"></div>
+      <div class="row" style="margin-top:12px">
+        <label class="btn"><i data-i="plus"></i> Add PDFs or images<input type="file" id="addIn" accept="application/pdf,image/*" multiple hidden></label>
+        <label class="btn"><i data-i="camera"></i> Add a photo<input type="file" id="addCam" accept="image/*" capture="environment" hidden></label>
+      </div>
+      
+    </div>
+    <div class="card">
+      <div class="card-title">Export or delete</div>
+      
+      <div class="row"><button id="exportGo"><i data-i="download"></i> Export</button><button class="danger" id="delSite"><i data-i="trash"></i> Delete this space</button></div>
+    </div>
+  </section>
+</main>
+
+<script src="/vendor/pdfjs/pdf.min.js"></script>
+<script src="/vendor/marked/marked.min.js"></script>
+<script src="/vendor/dompurify/purify.min.js"></script>
+<script src="/vendor/katex/katex.min.js"></script>
+<script src="/vendor/mermaid/mermaid.min.js"></script>
+<script src="/vendor/tesseract/tesseract.min.js"></script>
+<script src="common.js"></script>
+<script src="palette.js"></script>
+<script src="solvers.js"></script>
+<script src="interp.js"></script>
+<script src="concur.js"></script>
+<script src="dsim.js"></script>
+<script src="runners.js"></script>
+<script src="ra.js"></script>
+<script src="facts.js"></script>
+<script src="facts2.js"></script>
+<script src="facts3.js"></script>
+<script src="factcheck.js"></script>
+<script src="viz.js"></script>
+<script src="calcviz.js"></script>
+<script src="anim.js"></script>
+<script src="hooks.js"></script>
+<script src="diagrams.js"></script>
+<script src="quiz.js"></script>
+<script src="reader.js"></script>
+<script src="formulas.js"></script>
+<script src="topics.js"></script>
+<script src="notes.js"></script>
+<script src="chat.js"></script>
+<script src="pyq.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

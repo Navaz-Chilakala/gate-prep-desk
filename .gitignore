@@ -1,0 +1,25 @@
+# Your study data: uploaded books, progress (_hub.json), web cache, pictures. Never commit; use Settings → Backup.
+/sites/
+
+# Readable copies of your notes, topics and formulas (rebuilt from your data)
+/My GATE *.md
+
+# Backups and half-written saves
+*.zip
+*.part
+*.tmp
+*.bak
+backup-before-restore-*
+
+# Large local tools, installed separately (see README)
+/tools/sd/
+/tools/c/
+/tools/tcc/
+
+# Windows / editor clutter
+Thumbs.db
+desktop.ini
+*.lnk
+~$*
+.vscode/
+.idea/

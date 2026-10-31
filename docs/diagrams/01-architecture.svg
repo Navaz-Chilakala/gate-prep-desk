@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="700" viewBox="0 0 1000 700" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+  </defs>
+  <rect width="1000" height="700" fill="#FFFFFF"/>
+  <!-- student / window -->
+  <rect x="20" y="16" width="560" height="52" rx="10" fill="#F3F4F6" stroke="#6B7280" stroke-width="1.5"/>
+  <text x="300" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="#1F2937">Student</text>
+  <text x="300" y="59" text-anchor="middle" font-size="13" fill="#4B5563">App window (Edge --app) · http://localhost:8765</text>
+  <line x1="300" y1="68" x2="300" y2="88" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+
+  <!-- browser app -->
+  <rect x="20" y="90" width="560" height="420" rx="14" fill="#EEF2FB" stroke="#2C4BB3" stroke-width="2"/>
+  <text x="40" y="117" font-size="16" font-weight="700" fill="#1E3A8A">Browser app (HTML + JavaScript, runs in the page)</text>
+  <rect x="40" y="130" width="520" height="58" rx="8" fill="#FFFFFF" stroke="#93A9E6"/>
+  <text x="54" y="152" font-size="13" font-weight="700" fill="#1F2937">index.html</text>
+  <text x="130" y="152" font-size="12.5" fill="#374151">Learn · Photo doubt · Practice · PYQs · Mistake lab · Topics ·</text>
+  <text x="130" y="171" font-size="12.5" fill="#374151">Notes · Formulas · Books · Settings</text>
+  <text x="430" y="171" font-size="12.5" fill="#374151"><tspan font-weight="700">site.html</tspan> one book</text>
+
+  <g font-size="12.5" fill="#374151">
+    <rect x="40" y="200" width="255" height="92" rx="8" fill="#FFFFFF" stroke="#93A9E6"/>
+    <text x="54" y="222" font-weight="700" fill="#1F2937">Teaching and chat</text>
+    <text x="54" y="242">common.js (model calls, lessons)</text>
+    <text x="54" y="260">chat.js · site.js · reader.js</text>
+    <text x="54" y="278">notes.js · formulas.js</text>
+
+    <rect x="305" y="200" width="255" height="92" rx="8" fill="#FFFFFF" stroke="#2E7D4F"/>
+    <text x="319" y="222" font-weight="700" fill="#14532D">Verification</text>
+    <text x="319" y="242">solvers.js (22 exact calculators)</text>
+    <text x="319" y="260">runners.js · interp · concur · dsim · ra</text>
+    <text x="319" y="278">factcheck.js · facts1-3.js</text>
+
+    <rect x="40" y="304" width="255" height="74" rx="8" fill="#FFFFFF" stroke="#93A9E6"/>
+    <text x="54" y="326" font-weight="700" fill="#1F2937">Practice</text>
+    <text x="54" y="346">quiz.js · daily.js · pyq.js</text>
+    <text x="54" y="364">topics.js · selftest.js</text>
+
+    <rect x="305" y="304" width="255" height="74" rx="8" fill="#FFFFFF" stroke="#7048C8"/>
+    <text x="319" y="326" font-weight="700" fill="#4C1D95">Visuals</text>
+    <text x="319" y="346">viz.js (exact drawings)</text>
+    <text x="319" y="364">diagrams.js + Mermaid · hooks.js</text>
+
+    <rect x="40" y="390" width="255" height="74" rx="8" fill="#FFFFFF" stroke="#93A9E6"/>
+    <text x="54" y="412" font-weight="700" fill="#1F2937">Background</text>
+    <text x="54" y="432">nightshift.js · health.js</text>
+    <text x="54" y="450">search.js · sw.js (offline cache)</text>
+
+    <rect x="305" y="390" width="255" height="74" rx="8" fill="#FFFFFF" stroke="#9CA3AF"/>
+    <text x="319" y="412" font-weight="700" fill="#1F2937">Bundled libraries</text>
+    <text x="319" y="432">pdf.js · marked · DOMPurify · KaTeX</text>
+    <text x="319" y="450">Mermaid · Tesseract.js · sql.js</text>
+  </g>
+  <text x="300" y="494" text-anchor="middle" font-size="12" fill="#4B5563">State in memory + browser storage; all saved data goes through the server</text>
+
+  <!-- Ollama -->
+  <rect x="640" y="90" width="340" height="160" rx="14" fill="#FDF3E1" stroke="#B7791F" stroke-width="2"/>
+  <text x="658" y="117" font-size="16" font-weight="700" fill="#78350F">Ollama 0.40.6 · port 11434</text>
+  <g font-size="12.5" fill="#374151">
+    <text x="658" y="140">llama-server runner (llama.cpp, CUDA)</text>
+    <text x="658" y="166"><tspan font-weight="700">qwen3.5:4b</tspan> teaching, vision, checks</text>
+    <text x="658" y="186"><tspan font-weight="700">mistral-nemo 12B</tspan> second opinions</text>
+    <text x="658" y="206"><tspan font-weight="700">qwen2.5-coder 7B</tspan> optional</text>
+    <text x="658" y="232" fill="#6B7280">Models: C:\Users\NAVAZ\.ollama\models</text>
+  </g>
+  <line x1="580" y1="160" x2="638" y2="160" stroke="#475569" stroke-width="1.6" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text x="609" y="150" text-anchor="middle" font-size="11" fill="#475569">/api/chat</text>
+  <text x="609" y="178" text-anchor="middle" font-size="11" fill="#475569">streamed</text>
+
+  <!-- server -->
+  <rect x="640" y="280" width="340" height="170" rx="14" fill="#E7F4EC" stroke="#2E7D4F" stroke-width="2"/>
+  <text x="658" y="307" font-size="16" font-weight="700" fill="#14532D">PowerShell server · port 8765</text>
+  <g font-size="12.5" fill="#374151">
+    <text x="658" y="330">server.ps1 (HttpListener, no install)</text>
+    <text x="658" y="354">Serves the app's own files</text>
+    <text x="658" y="374">/api/hub · /api/sites · /files (your data)</text>
+    <text x="658" y="394">/api/runc · /api/cc (C programs)</text>
+    <text x="658" y="414">/api/imagegen · /api/backup · /api/web</text>
+    <text x="658" y="434">/api/sizes · /api/quit</text>
+  </g>
+  <line x1="580" y1="365" x2="638" y2="365" stroke="#475569" stroke-width="1.6" marker-start="url(#a)" marker-end="url(#a)"/>
+  <text x="609" y="355" text-anchor="middle" font-size="11" fill="#475569">HTTP</text>
+
+  <!-- bus to helpers -->
+  <line x1="810" y1="450" x2="810" y2="530" stroke="#475569" stroke-width="1.6"/>
+  <line x1="132" y1="530" x2="867" y2="530" stroke="#475569" stroke-width="1.6"/>
+  <g stroke="#475569" stroke-width="1.6">
+    <line x1="132" y1="530" x2="132" y2="548" marker-end="url(#a)"/>
+    <line x1="377" y1="530" x2="377" y2="548" marker-end="url(#a)"/>
+    <line x1="622" y1="530" x2="622" y2="548" marker-end="url(#a)"/>
+    <line x1="867" y1="530" x2="867" y2="548" marker-end="url(#a)"/>
+  </g>
+  <g font-size="12.5" fill="#374151">
+    <rect x="20" y="550" width="225" height="70" rx="10" fill="#F3F4F6" stroke="#6B7280"/>
+    <text x="132" y="574" text-anchor="middle" font-weight="700" fill="#1F2937">gcc (WinLibs)</text>
+    <text x="132" y="594" text-anchor="middle">compiles and runs C</text>
+    <text x="132" y="611" text-anchor="middle">5 s limit, safe headers only</text>
+
+    <rect x="265" y="550" width="225" height="70" rx="10" fill="#EFE9FB" stroke="#7048C8"/>
+    <text x="377" y="574" text-anchor="middle" font-weight="700" fill="#4C1D95">sd-server.exe · port 7861</text>
+    <text x="377" y="594" text-anchor="middle">stable-diffusion.cpp (CUDA)</text>
+    <text x="377" y="611" text-anchor="middle">SDXL-Turbo pictures</text>
+
+    <rect x="510" y="550" width="225" height="70" rx="10" fill="#FFFFFF" stroke="#2C4BB3"/>
+    <text x="622" y="574" text-anchor="middle" font-weight="700" fill="#1E3A8A">Disk: sites\</text>
+    <text x="622" y="594" text-anchor="middle">_hub.json (progress)</text>
+    <text x="622" y="611" text-anchor="middle">one folder per book · _images</text>
+
+    <rect x="755" y="550" width="225" height="70" rx="10" fill="#FFFFFF" stroke="#9CA3AF" stroke-dasharray="5 4"/>
+    <text x="867" y="574" text-anchor="middle" font-weight="700" fill="#1F2937">Internet (optional)</text>
+    <text x="867" y="594" text-anchor="middle">Wikipedia / Ollama web search</text>
+    <text x="867" y="611" text-anchor="middle">only the topic is sent</text>
+  </g>
+
+  <!-- hardware -->
+  <rect x="20" y="642" width="960" height="40" rx="10" fill="#111827"/>
+  <text x="500" y="667" text-anchor="middle" font-size="13.5" fill="#F9FAFB">Laptop: NVIDIA RTX 5050 Laptop GPU (8 GB VRAM) · AMD Ryzen 7 260 (8 cores / 16 threads) · 23 GB RAM · Windows 11</text>
+</svg>

@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="560" viewBox="0 0 1000 560" font-family="Segoe UI, Arial, sans-serif">
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker></defs>
+  <rect width="1000" height="560" fill="#FFFFFF"/>
+  <!-- steps row -->
+  <g font-size="12.5" fill="#374151">
+    <g>
+      <rect x="20" y="20" width="180" height="150" rx="12" fill="#F3F4F6" stroke="#6B7280" stroke-width="1.5"/>
+      <circle cx="44" cy="44" r="13" fill="#374151"/><text x="44" y="49" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">1</text>
+      <text x="64" y="49" font-weight="700" font-size="13.5" fill="#1F2937">Request arrives</text>
+      <text x="34" y="78">/api/chat names a model</text>
+      <text x="34" y="97">and options.num_ctx</text>
+      <text x="34" y="116">= 16,384 (always the same,</text>
+      <text x="34" y="135">so no reload between calls)</text>
+    </g>
+    <line x1="200" y1="95" x2="218" y2="95" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <g>
+      <rect x="220" y="20" width="180" height="150" rx="12" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+      <circle cx="244" cy="44" r="13" fill="#B7791F"/><text x="244" y="49" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">2</text>
+      <text x="264" y="49" font-weight="700" font-size="13.5" fill="#78350F">Scheduler plans</text>
+      <text x="234" y="78">reads the GGUF header:</text>
+      <text x="234" y="97">layers, heads, sizes</text>
+      <text x="234" y="116">estimates weights + KV +</text>
+      <text x="234" y="135">compute for this num_ctx</text>
+    </g>
+    <line x1="400" y1="95" x2="418" y2="95" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <g>
+      <rect x="420" y="20" width="180" height="150" rx="12" fill="#FDF3E1" stroke="#B7791F" stroke-width="1.5"/>
+      <circle cx="444" cy="44" r="13" fill="#B7791F"/><text x="444" y="49" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">3</text>
+      <text x="464" y="49" font-weight="700" font-size="13.5" fill="#78350F">Fit to the GPU</text>
+      <text x="434" y="78">free VRAM 6.9 GiB, keeps</text>
+      <text x="434" y="97">457 MiB spare → 6.5 GiB</text>
+      <text x="434" y="116">usable. Unload other model</text>
+      <text x="434" y="135">or split layers GPU / CPU</text>
+    </g>
+    <line x1="600" y1="95" x2="618" y2="95" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <g>
+      <rect x="620" y="20" width="180" height="150" rx="12" fill="#EEF2FB" stroke="#2C4BB3" stroke-width="1.5"/>
+      <circle cx="644" cy="44" r="13" fill="#2C4BB3"/><text x="644" y="49" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">4</text>
+      <text x="664" y="49" font-weight="700" font-size="13.5" fill="#1E3A8A">Runner loads</text>
+      <text x="634" y="78">llama-server.exe starts;</text>
+      <text x="634" y="97">GPU layers copied to VRAM,</text>
+      <text x="634" y="116">the rest stay in RAM</text>
+      <text x="634" y="135">(memory-mapped file)</text>
+    </g>
+    <line x1="800" y1="95" x2="818" y2="95" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <g>
+      <rect x="820" y="20" width="160" height="150" rx="12" fill="#E7F4EC" stroke="#2E7D4F" stroke-width="1.5"/>
+      <circle cx="844" cy="44" r="13" fill="#2E7D4F"/><text x="844" y="49" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">5</text>
+      <text x="864" y="49" font-weight="700" font-size="13.5" fill="#14532D">Ready</text>
+      <text x="834" y="78">KV cache + compute</text>
+      <text x="834" y="97">buffers allocated,</text>
+      <text x="834" y="116">warm-up, then tokens</text>
+      <text x="834" y="135">stream back</text>
+    </g>
+  </g>
+
+  <!-- where the bytes go -->
+  <text x="20" y="214" font-size="15" font-weight="700" fill="#1F2937">Where the bytes go (measured, num_ctx = 16,384)</text>
+  <!-- disk -->
+  <rect x="20" y="232" width="230" height="300" rx="12" fill="#F9FAFB" stroke="#9CA3AF"/>
+  <text x="135" y="258" text-anchor="middle" font-size="14" font-weight="700" fill="#1F2937">Disk (SSD)</text>
+  <g font-size="12.5" fill="#374151">
+    <rect x="36" y="272" width="198" height="70" rx="8" fill="#FFFFFF" stroke="#B7791F"/>
+    <text x="48" y="294" font-weight="700">qwen3.5:4b · 3.10 GiB</text>
+    <text x="48" y="313">GGUF Q4_K_M, 4.2 B params</text>
+    <text x="48" y="331">includes vision encoder</text>
+    <rect x="36" y="352" width="198" height="70" rx="8" fill="#FFFFFF" stroke="#B7791F"/>
+    <text x="48" y="374" font-weight="700">mistral-nemo · 6.96 GiB</text>
+    <text x="48" y="393">GGUF Q4_K_M, 12.2 B params</text>
+    <text x="48" y="411">40 layers</text>
+    <rect x="36" y="432" width="198" height="84" rx="8" fill="#FFFFFF" stroke="#7048C8"/>
+    <text x="48" y="454" font-weight="700">SDXL-Turbo · 6.46 GiB</text>
+    <text x="48" y="473">fp16 safetensors + VAE</text>
+    <text x="48" y="491">converted to q8_0 when</text>
+    <text x="48" y="509">loaded by sd-server</text>
+  </g>
+  <line x1="250" y1="382" x2="300" y2="382" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+  <!-- RAM -->
+  <rect x="302" y="232" width="300" height="300" rx="12" fill="#F3F4F6" stroke="#6B7280"/>
+  <text x="452" y="258" text-anchor="middle" font-size="14" font-weight="700" fill="#1F2937">System RAM (23 GB)</text>
+  <g font-size="12.5" fill="#374151">
+    <rect x="318" y="272" width="268" height="58" rx="8" fill="#FFFFFF" stroke="#B7791F"/>
+    <text x="330" y="294" font-weight="700">qwen3.5: 497 MiB in RAM</text>
+    <text x="330" y="313">token-embedding table (a lookup, no maths)</text>
+    <rect x="318" y="340" width="268" height="76" rx="8" fill="#FFFFFF" stroke="#B7791F"/>
+    <text x="330" y="362" font-weight="700">mistral-nemo: 2,855 MiB weights</text>
+    <text x="330" y="381">16 of 40 layers run on the CPU</text>
+    <text x="330" y="400">+ 1,024 MiB of its KV cache</text>
+    <rect x="318" y="426" width="268" height="90" rx="8" fill="#FFFFFF" stroke="#7048C8"/>
+    <text x="330" y="448" font-weight="700">SDXL-Turbo (--offload-to-cpu)</text>
+    <text x="330" y="467">weights wait in RAM; each stage moves</text>
+    <text x="330" y="486">to the GPU only while it runs, so</text>
+    <text x="330" y="505">idle VRAM use is about 0.6 GB</text>
+  </g>
+  <line x1="602" y1="382" x2="652" y2="382" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+  <!-- VRAM -->
+  <rect x="654" y="232" width="326" height="300" rx="12" fill="#EEF2FB" stroke="#2C4BB3" stroke-width="1.5"/>
+  <text x="817" y="258" text-anchor="middle" font-size="14" font-weight="700" fill="#1E3A8A">GPU VRAM (8 GB)</text>
+  <g font-size="12.5" fill="#374151">
+    <rect x="670" y="272" width="294" height="112" rx="8" fill="#FFFFFF" stroke="#2C4BB3"/>
+    <text x="682" y="294" font-weight="700">qwen3.5:4b (all 33 layers)</text>
+    <text x="682" y="313">weights 2,515 MiB · KV 512 MiB</text>
+    <text x="682" y="332">recurrent state 50 MiB</text>
+    <text x="682" y="351">compute 180 MiB · vision 223 MiB</text>
+    <text x="682" y="372" font-weight="700" fill="#1E3A8A">= 3.40 GiB on the GPU</text>
+    <rect x="670" y="394" width="294" height="122" rx="8" fill="#FFFFFF" stroke="#B7791F"/>
+    <text x="682" y="416" font-weight="700">mistral-nemo (25 of 41 layers)</text>
+    <text x="682" y="435">weights 4,268 MiB · KV 1,536 MiB</text>
+    <text x="682" y="454">compute 185 MiB</text>
+    <text x="682" y="475" font-weight="700" fill="#78350F">= 5.85 GiB on the GPU</text>
+    <text x="682" y="497" fill="#6B7280">Only one of the two fits at a time:</text>
+    <text x="682" y="510" fill="#6B7280">switching models means a reload</text>
+  </g>
+</svg>
