@@ -3,6 +3,14 @@
 
 GATE Prep Desk is a sophisticated educational ecosystem that runs entirely on your local machine. It leverages state-of-the-art Small Language Models (SLMs) via Ollama to provide deep, step-by-step tutoring without requiring an internet connection or external API costs.
 
+## 📸 Screenshots
+
+| | |
+|---|---|
+| **Home**: ask any topic, daily mix, syllabus progress<br>![Home](docs/screenshots/home.jpg) | **Animated lesson**: steps computed by the app, not the model<br>![Animated lesson](docs/screenshots/animated-lesson.jpg) |
+| **Mastery check**: 5 tricky questions, 4 correct closes the topic<br>![Mastery check](docs/screenshots/mastery-check.jpg) | **Exact calculators**: scheduling, paging, cache, subnetting, K-map, CRC<br>![Calculators](docs/screenshots/calculators.jpg) |
+| **Mistake lab**: why you slip + spaced review<br>![Mistake lab](docs/screenshots/mistake-lab.jpg) | **Formula library**: built from your own lessons<br>![Formulas](docs/screenshots/formulas.jpg) |
+
 ## 🚀 Key Features
 
 ### 🧠 Intelligent Learning Path
